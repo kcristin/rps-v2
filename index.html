@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Rock Paper Scissors</title>
+</head>
+
+<body>
+
+    <div class="content" style="text-align: center;">
+
+        <header>ROCK PAPER SCISSORS</header>
+        <br>
+        <button id="game">Play</button>
+
+        <div class="gamestats" style="display: none;">
+            <div class="points">
+                <p id="player"></p>
+                <p id="computer"></p>
+                <p id="round"></p>
+                <br>
+            </div>
+        </div>
+        
+        <div class="choices" style="display: none;">
+            <br>
+            <button class="choice" value="rock">ROCK</button>
+            <button class="choice" value="paper">PAPER</button>
+            <button class="choice" value="scissors">SCISSORS</button>
+        </div>
+        
+        <div class="results" style="display: none;">
+            <p id="message"></p>
+            <br>
+            <p id="playerscore" style="display: inline-block; margin: 8px;"></p>
+            <p id="computerscore" style="display: inline-block; margin: 8px;"></p>
+            <p id="roundsplayed" style="display: inline-block; margin: 8px;"></p>
+        </div>
+        
+    </div>
+
+    <script>
+
+    const choice = document.querySelectorAll('.choice');
+    const choices = document.querySelector('.choices'); 
+    const gamestats = document.querySelector('.gamestats')
+    const points = document.querySelector('.points')
+        
+    let playerScoreDisplay = document.querySelector('#player');
+    let computerScoreDisplay = document.querySelector('#computer');
+    let roundDisplay = document.querySelector('#round');
+
+    let playerScore = 0;
+    let computerScore = 0;
+    let round = 1;
+
+    let game = () => {
+
+        playGame.style.display = 'none';
+        gamestats.style.display = 'inline-block';
+        choices.style.display = 'inline-block';
+        points.style.display = 'inline'
+
+        choice.forEach(choice => choice.addEventListener('click', function (e) {
+            let playerSelection = e.target.value.toLowerCase();
+
+            if ((playerScore >= 5) || (computerScore >= 5)) {
+                choices.style.display = 'none';
+                getResults(playerScore, computerScore);
+
+            } else {
+                playRound(playerSelection, computerPlay());
+        
+                playerScoreDisplay.innerHTML = `Player: ${playerScore}`;
+                computerScoreDisplay.innerHTML = `Computer: ${computerScore}`;
+                roundDisplay.innerHTML = `Round: ${round}`;
+                round++;
+            }
+        }));
+    };
+
+    let computerPlay = () => {
+        let choice = ["Rock", "Paper", "Scissors"];
+        index = Math.floor(Math.random(0,2) * 3);
+        let computerSelection = choice[index];
+        return computerSelection.toLowerCase();
+    };
+        
+    let playRound = (playerSelection, computerSelection) => {
+
+        if ((playerSelection === "rock") && (computerSelection === "paper")) {
+            console.log("You Lose! Paper beats Rock!");
+            return computerScore++;
+        
+        } else if ((playerSelection === "rock") && (computerSelection === "scissors")) {
+            console.log("You Win! Rock Beats Scissors!");
+            return playerScore++;
+        
+        } else if ((playerSelection === "paper") && (computerSelection === "rock")) {
+            console.log("You Win! Paper Beats Rock!");
+            return playerScore++;
+        
+        } else if ((playerSelection === "paper") && (computerSelection === "scissors")) {
+            console.log("You Lose! Scissors beats Paper!");
+            return computerScore++;
+        
+        } else if ((playerSelection === "scissors") && (computerSelection === "rock")) {
+            console.log("You Lose! Rock beats Scissors!)");
+            return computerScore++;
+        
+        } else if ((playerSelection === "scissors") && (computerSelection === "paper")) {
+            console.log("You Win! Scissors Beats Paper!");
+            return playerScore++;
+                
+        } else if (playerSelection === computerSelection) {
+            console.log("It's a tie!");
+            return;
+
+        } else {
+            console.log(`playerSelection: ${playerSelection}`);
+            console.log(`computerSelection: ${computerSelection}`);
+            console.log("ERROR");
+        }
+    };
+
+    let getResults = (playerScore, computerScore) => {
+
+        gamestats.style.display = 'none';
+
+        const message = document.querySelector('#message');
+        const results = document.querySelector('.results');
+        const finalplayer = document.querySelector('#playerscore');
+        const finalcomputer = document.querySelector('#computerscore');
+        const roundsplayed = document.querySelector('#roundsplayed')
+
+
+        if (playerScore > computerScore) {
+            message.innerHTML = "You Win! Congratulations!";
+            console.log('WIN');
+        }
+        
+        else if (playerScore < computerScore) {
+            message.innerHTML = "You Lose! Better Luck Next Time...";
+            console.log('LOSE');
+                
+        } else {
+            message.innerHTML = "Looks like a tie!";
+            console.log('TIE');
+        }
+
+        finalplayer.innerHTML = `Player Score: ${playerScore}`;
+        finalcomputer.innerHTML = `Computer Score: ${computerScore}`;
+        roundsplayed.innerHTML = `Rounds Played: ${round}`;
+        results.style.display = 'inline-block';
+    }
+
+    const playGame = document.querySelector('#game');
+    playGame.addEventListener('click', game);
+
+    </script>
+</body>
+</html>
